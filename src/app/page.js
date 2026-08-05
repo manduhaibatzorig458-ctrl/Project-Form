@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import { PineconeLogo } from "./icons/PineconeLogo";
 import { VectorLogo } from "./icons/VectorLogo";
@@ -212,7 +213,7 @@ export default function Home() {
               <PineconeLogo />
             </div>
 
-            <h1 className="text-3xl font-bold mt-4 mb-4">You're All Set 🔥</h1>
+            <h1 className="text-3xl font-bold mt-4 mb-4">You Are All Set 🔥</h1>
 
             <p className="text-gray-500 mb-8">
               We have received your submission. Thank you for joining us!
@@ -224,3 +225,7 @@ export default function Home() {
     </div>
   );
 }
+
+
+
+        
