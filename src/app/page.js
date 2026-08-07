@@ -24,9 +24,11 @@ export default function Home() {
     setStep(steps - 1);
   };
 
+  
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
-     
+      <div className=" rounded-3xl border-4 border-white-500 p-8">
 
         {firstStep && (
           <StepOne
@@ -47,13 +49,14 @@ export default function Home() {
           handleBack={handleBack}
          />
         )}
+ 
+        {final && ( <StepFinal/>
+        )}
 
-        {final && ( StepFinal )}
-     
-    </div>
+        
+     </div>
+   </div> 
   );
 }
 
 
-
-        
