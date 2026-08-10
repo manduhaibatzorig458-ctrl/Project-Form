@@ -4,6 +4,7 @@ import Image from "next/image";
 import { PineconeLogo } from "./icons/PineconeLogo";
 import { VectorLogo } from "./icons/VectorLogo";
 import { useState } from "react";
+
 import StepOne from "./features/StepOne";
 import StepTwo from "./features/StepTwo"
 import StepThree from "./features/StepThree";
@@ -58,5 +59,8 @@ export default function Home() {
    </div> 
   );
 }
+
+
+
 
 

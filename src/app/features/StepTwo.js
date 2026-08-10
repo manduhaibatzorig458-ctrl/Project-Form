@@ -1,37 +1,78 @@
 "use client";
 
 import { useState } from "react";
-import { PineconeLogo } from "../icons/PineconeLogo";
-import { VectorLogo } from "../icons/VectorLogo";
 
 export default function StepTwo({ handleStep, handleBack }) {
 
- 
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const phoneValid = /^[0-9]{8}$/.test(phone);
-  const passwordValid =
-    /^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(password);
-  const passwordMatch =
-    password === confirmPassword && confirmPassword !== "";
+  // Input өөрчлөх
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  const formValid =
-    emailValid &&
-    phoneValid &&
-    passwordValid &&
-    passwordMatch;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
+  // Validation
+  const validation = {
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email),
 
+    phone: /^[0-9]{8}$/.test(formData.phone),
 
+    password: /^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(
+      formData.password
+    ),
+
+    confirmPassword:
+      formData.password === formData.confirmPassword &&
+      formData.confirmPassword !== "",
+  };
+
+  // Бүх input зөв эсэх
+  const formValid = Object.values(validation).every(Boolean);
+
+  // Input-уудын мэдээлэл
+  const fields = [
+    {
+      name: "email",
+      label: "Email",
+      type: "email",
+      placeholder: "Placeholder",
+      error: "Please provide a valid email address.",
+    },
+    {
+      name: "phone",
+      label: "Phone number",
+      type: "text",
+      placeholder: "Placeholder",
+      error: "Please enter a valid phone number.",
+    },
+    {
+      name: "password",
+      label: "Password",
+      type: "password",
+      placeholder: "Placeholder",
+      error: "Password must include letters and numbers.",
+    },
+    {
+      name: "confirmPassword",
+      label: "Confirm password",
+      type: "password",
+      placeholder: "Placeholder",
+      error: "Passwords do not match. Please try again.",
+    },
+  ];
 
   return (
     <div>
-      <PineconeLogo />
-
       <h1 className="text-3xl font-bold mt-4">
         Join Us! 😎
       </h1>
@@ -40,90 +81,44 @@ export default function StepTwo({ handleStep, handleBack }) {
         Please provide all current information accurately.
       </p>
 
-      {/* Email */}
-      <div className="mb-4">
-        <label className="block font-semibold mb-2">
-          Email <span className="text-red-500">*</span>
-        </label>
+      {/* Inputs */}
+      {fields.map((field) => {
+        const value = formData[field.name];
+        const isValid = validation[field.name];
 
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Placeholder"
-          className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        return (
+          <div
+            key={field.name}
+            className={
+              field.name === "confirmPassword"
+                ? "mb-8"
+                : "mb-4"
+            }
+          >
+            <label className="block font-semibold mb-2">
+              {field.label}{" "}
+              <span className="text-red-500">*</span>
+            </label>
 
-        {email && !emailValid && (
-          <p className="text-red-500 text-sm mt-1">
-            Please provide a valid email address.
-          </p>
-        )}
-      </div>
+            <input
+              type={field.type}
+              name={field.name}
+              value={value}
+              onChange={handleChange}
+              placeholder={field.placeholder}
+              className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
-      {/* Phone */}
-      <div className="mb-4">
-        <label className="block font-semibold mb-2">
-          Phone number <span className="text-red-500">*</span>
-        </label>
+            {value && !isValid && (
+              <p className="text-red-500 text-sm mt-1">
+                {field.error}
+              </p>
+            )}
+          </div>
+        );
+      })}
 
-        <input
-          type="text"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          placeholder="Placeholder"
-          className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-        {phone && !phoneValid && (
-          <p className="text-red-500 text-sm mt-1">
-            Please enter a valid phone number.
-          </p>
-        )}
-      </div>
-
-      {/* Password */}
-      <div className="mb-4">
-        <label className="block font-semibold mb-2">
-          Password <span className="text-red-500">*</span>
-        </label>
-
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Placeholder"
-          className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-        {password && !passwordValid && (
-          <p className="text-red-500 text-sm mt-1">
-            Password must include letters and numbers.
-          </p>
-        )}
-      </div>
-
-      {/* Confirm Password */}
-      <div className="mb-8">
-        <label className="block font-semibold mb-2">
-          Confirm password <span className="text-red-500">*</span>
-        </label>
-
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="Placeholder"
-          className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-        {confirmPassword && !passwordMatch && (
-          <p className="text-red-500 text-sm mt-1">
-            Passwords do not match. Please try again.
-          </p>
-        )}
-      </div>
-
+      {/* Buttons */}
       <div className="flex gap-3">
         <button
           onClick={handleBack}
@@ -147,3 +142,6 @@ export default function StepTwo({ handleStep, handleBack }) {
     </div>
   );
 }
+
+
+

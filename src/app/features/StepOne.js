@@ -1,106 +1,131 @@
 "use client";
 
 import { useState } from "react";
-import { PineconeLogo } from "../icons/PineconeLogo";
 import { VectorLogo } from "../icons/VectorLogo";
 
 export default function StepOne({ handleStep }) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    username: "",
+  });
 
+  // Бүртгэлтэй username-ууд
+  const takenUsernames = [
+    "admin",
+    "test",
+    "pinecone",
+    "amgaa",
+  ];
+
+  // Input өөрчлөх
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Validation
   const nameRegex = /^[A-Za-z]+$/;
 
-  const takenUsernames = ["admin", "test", "pinecone", "amgaa"];
+  const validation = {
+    firstName:
+      formData.firstName.trim() !== "" &&
+      nameRegex.test(formData.firstName),
 
-  const firstNameValid = firstName.trim() !== "" && nameRegex.test(firstName);
+    lastName:
+      formData.lastName.trim() !== "" &&
+      nameRegex.test(formData.lastName),
 
-  const lastNameValid = lastName.trim() !== "" && nameRegex.test(lastName);
+    username:
+      formData.username.trim() !== "" &&
+      !takenUsernames.includes(
+        formData.username.toLowerCase()
+      ),
+  };
 
-  const usernameTaken = takenUsernames.includes(username.toLowerCase());
+  // Бүх input зөв эсэх
+  const formValid = Object.values(validation).every(Boolean);
 
-  const formValid =
-    firstNameValid && lastNameValid && username.trim() !== "" && !usernameTaken;
+  // Input-уудын мэдээлэл
+  const fields = [
+    {
+      name: "firstName",
+      label: "First name",
+      type: "text",
+      placeholder: "Placeholder",
+      error:
+        "First name cannot contain special characters or numbers.",
+    },
+    {
+      name: "lastName",
+      label: "Last name",
+      type: "text",
+      placeholder: "Placeholder",
+      error:
+        "Last name cannot contain special characters or numbers.",
+    },
+    {
+      name: "username",
+      label: "Username",
+      type: "text",
+      placeholder: "Placeholder",
+      error:
+        "This username is already taken. Please choose another one.",
+    },
+  ];
 
   return (
     <div>
-      <PineconeLogo />
-
-      <h1 className="text-4xl font-bold mt-4">Join Us! 😎</h1>
+      <h1 className="text-4xl font-bold mt-4">
+        Join Us! 😎
+      </h1>
 
       <p className="text-gray-500 mt-2 mb-8">
         Please provide all current information accurately.
       </p>
 
-      {/* First Name */}
-      <div className="mb-5">
-        <label className="block font-semibold mb-2">
-          First name <span className="text-red-500">*</span>
-        </label>
+      {/* Inputs */}
+      {fields.map((field) => {
+        const value = formData[field.name];
+        const isValid = validation[field.name];
 
-        <input
-          type="text"
-          placeholder="Placeholder"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          className="w-full border rounded-md px-4 py-3"
-        />
-        
+        return (
+          <div key={field.name} className="mb-5">
+            <label className="block font-semibold mb-2">
+              {field.label}{" "}
+              <span className="text-red-500">*</span>
+            </label>
 
-        {firstName && !firstNameValid && (
-          <p className="text-red-500 text-sm mt-1">
-            First name cannot contain special characters or numbers.
-          </p>
-        )}
-      </div>
+            <input
+              type={field.type}
+              name={field.name}
+              value={value}
+              onChange={handleChange}
+              placeholder={field.placeholder}
+              className="w-full border rounded-md px-4 py-3"
+            />
 
-      {/* Last Name */}
-      <div className="mb-5">
-        <label className="block font-semibold mb-2">
-          Last name <span className="text-red-500">*</span>
-        </label>
+            {value && !isValid && (
+              <p className="text-red-500 text-sm mt-1">
+                {field.error}
+              </p>
+            )}
+          </div>
+        );
+      })}
 
-        <input
-          type="text"
-          placeholder="Placeholder"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          className="w-full border rounded-md px-4 py-3"
-        />
-
-        {lastName && !lastNameValid && (
-          <p className="text-red-500 text-sm mt-1">
-            Last name cannot contain special characters or numbers.
-          </p>
-        )}
-      </div>
-
-      {/* Username */}
-      <div className="mb-5">
-        <label className="block font-semibold mb-2">
-          Username <span className="text-red-500">*</span>
-        </label>
-
-        <input
-          type="text"
-          placeholder="Placeholder"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full border rounded-md px-4 py-3"
-        />
-        
- {usernameTaken && (
-          <p className="text-red-500 text-sm mt-1">
-            This username is already taken. Please choose another one.
-          </p>
-        )}
-      </div>
-
+      {/* Continue button */}
       <button
         onClick={handleStep}
         disabled={!formValid}
         className={`w-full mt-20 py-3 rounded-lg text-white ${
-          formValid ? "bg-black" : "bg-gray-300 cursor-not-allowed"
+          formValid
+            ? "bg-black"
+            : "bg-gray-300 cursor-not-allowed"
         }`}
       >
         Continue 1/3
