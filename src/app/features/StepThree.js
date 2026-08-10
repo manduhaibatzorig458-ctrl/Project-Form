@@ -1,8 +1,9 @@
 "use client";
-
 import { useState } from "react";
-
 export default function StepThree({ handleStep, handleBack }) {
+
+
+
   const [formData, setFormData] = useState({
     birthDate: "",
     image: null,
@@ -56,6 +57,7 @@ export default function StepThree({ handleStep, handleBack }) {
     }
   };
 
+  
   return (
     <div>
       <h1 className="text-3xl font-bold mt-4">
@@ -97,17 +99,7 @@ export default function StepThree({ handleStep, handleBack }) {
         </label>
 
         <label
-          className="
-            w-full
-            h-52
-            border
-            rounded-lg
-            flex
-            items-center
-            justify-center
-            cursor-pointer
-            overflow-hidden
-          "
+          className="w-full h-52 border rounded-lg flex items-center justify-center cursor-pointer overflow-hidden "
         >
           {formData.imagePreview ? (
             <img
@@ -140,13 +132,7 @@ export default function StepThree({ handleStep, handleBack }) {
       <div className="flex gap-3">
         <button
           onClick={handleBack}
-          className="
-            flex-1
-            border
-            rounded-lg
-            py-3
-          "
-        >
+          className=" flex-1 border py-3">
           ← Back
         </button>
 
