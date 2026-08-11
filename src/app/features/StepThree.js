@@ -132,7 +132,7 @@ export default function StepThree({ handleStep, handleBack }) {
       <div className="flex gap-3">
         <button
           onClick={handleBack}
-          className=" flex-1 border py-3">
+          className=" flex-1 border rounded-lg py-3">
           ← Back
         </button>
 
@@ -151,13 +151,9 @@ export default function StepThree({ handleStep, handleBack }) {
             }
           `}
         >
-          Submit
+          Submit 3 / 3
         </button>
       </div>
-
-      <p className="text-center mt-4">
-        3 / 3
-      </p>
     </div>
   );
 }
