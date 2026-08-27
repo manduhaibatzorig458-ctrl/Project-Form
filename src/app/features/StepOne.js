@@ -1,16 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { VectorLogo } from "../icons/VectorLogo";
 
-export default function StepOne({ handleStep }) {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    username: "",
-  });
-
-  // Бүртгэлтэй username-ууд
+export default function StepOne({
+  formData,
+  setFormData,
+  handleStep,
+}) {
   const takenUsernames = [
     "admin",
     "test",
@@ -18,7 +14,6 @@ export default function StepOne({ handleStep }) {
     "amgaa",
   ];
 
-  // Input өөрчлөх
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -28,7 +23,6 @@ export default function StepOne({ handleStep }) {
     }));
   };
 
-  // Validation
   const nameRegex = /^[A-Za-z]+$/;
 
   const validation = {
@@ -47,10 +41,8 @@ export default function StepOne({ handleStep }) {
       ),
   };
 
-  // Бүх input зөв эсэх
   const formValid = Object.values(validation).every(Boolean);
 
-  // Input-уудын мэдээлэл
   const fields = [
     {
       name: "firstName",
@@ -88,7 +80,6 @@ export default function StepOne({ handleStep }) {
         Please provide all current information accurately.
       </p>
 
-      {/* Inputs */}
       {fields.map((field) => {
         const value = formData[field.name];
         const isValid = validation[field.name];
@@ -118,7 +109,6 @@ export default function StepOne({ handleStep }) {
         );
       })}
 
-      {/* Continue button */}
       <button
         onClick={handleStep}
         disabled={!formValid}

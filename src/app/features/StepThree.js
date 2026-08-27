@@ -1,18 +1,11 @@
 "use client";
-import { useState } from "react";
-export default function StepThree({ handleStep, handleBack }) {
 
-
-
-  const [formData, setFormData] = useState({
-    birthDate: "",
-    image: null,
-    imagePreview: "",
-  });
-
-  const [touched, setTouched] = useState(false);
-
-  // Date өөрчлөх
+export default function StepThree({
+  formData,
+  setFormData,
+  handleStep,
+  handleBack,
+}) {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -22,42 +15,25 @@ export default function StepThree({ handleStep, handleBack }) {
     }));
   };
 
-  // Image сонгох
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
 
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
     setFormData((prev) => ({
       ...prev,
       image: file,
       imagePreview: URL.createObjectURL(file),
     }));
-
-    setTouched(true);
   };
 
-  // Validation
   const validation = {
     birthDate: formData.birthDate !== "",
     image: formData.image !== null,
   };
 
-  // Form зөв эсэх
   const formValid = Object.values(validation).every(Boolean);
 
-  // Submit
-  const handleSubmit = () => {
-    setTouched(true);
-
-    if (formValid) {
-      handleStep();
-    }
-  };
-
-  
   return (
     <div>
       <h1 className="text-3xl font-bold mt-4">
@@ -80,11 +56,10 @@ export default function StepThree({ handleStep, handleBack }) {
           name="birthDate"
           value={formData.birthDate}
           onChange={handleChange}
-          onBlur={() => setTouched(true)}
           className="w-full border rounded-lg px-4 py-3"
         />
 
-        {touched && !validation.birthDate && (
+        {!validation.birthDate && (
           <p className="text-red-500 text-sm mt-1">
             Please select a date.
           </p>
@@ -98,9 +73,7 @@ export default function StepThree({ handleStep, handleBack }) {
           <span className="text-red-500">*</span>
         </label>
 
-        <label
-          className="w-full h-52 border rounded-lg flex items-center justify-center cursor-pointer overflow-hidden "
-        >
+        <label className="w-full h-52 border rounded-lg flex items-center justify-center cursor-pointer overflow-hidden">
           {formData.imagePreview ? (
             <img
               src={formData.imagePreview}
@@ -121,7 +94,7 @@ export default function StepThree({ handleStep, handleBack }) {
           />
         </label>
 
-        {touched && !validation.image && (
+        {!validation.image && (
           <p className="text-red-500 text-sm mt-1">
             Image cannot be blank
           </p>
@@ -132,24 +105,19 @@ export default function StepThree({ handleStep, handleBack }) {
       <div className="flex gap-3">
         <button
           onClick={handleBack}
-          className=" flex-1 border rounded-lg py-3">
+          className="flex-1 border rounded-lg py-3"
+        >
           ← Back
         </button>
 
         <button
-          onClick={handleSubmit}
+          onClick={handleStep}
           disabled={!formValid}
-          className={`
-            flex-1
-            rounded-lg
-            py-3
-            text-white
-            ${
-              formValid
-                ? "bg-black"
-                : "bg-gray-300 cursor-not-allowed"
-            }
-          `}
+          className={`flex-1 rounded-lg py-3 text-white ${
+            formValid
+              ? "bg-black"
+              : "bg-gray-300 cursor-not-allowed"
+          }`}
         >
           Submit 3 / 3
         </button>
@@ -157,4 +125,3 @@ export default function StepThree({ handleStep, handleBack }) {
     </div>
   );
 }
-
